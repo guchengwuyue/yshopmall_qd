@@ -6,20 +6,20 @@
       </div>
       <el-steps
         v-if="form.refundStatus===0"
-        :active="orderStatus.size"
+        :active="safeOrderStatus.size"
         align-center
         process-status="process"
         finish-status="success"
       >
-        <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
-        <el-step title="待核销" :description="orderStatus.paySuccess"></el-step>
-        <el-step title="待评价" :description="orderStatus.orderVerific"></el-step>
-        <el-step title="已完成" :description="orderStatus.checkOrderOver"></el-step>
+        <el-step title="用户下单" :description="safeOrderStatus.cacheKeyCreateOrder"></el-step>
+        <el-step title="待核销" :description="safeOrderStatus.paySuccess"></el-step>
+        <el-step title="待评价" :description="safeOrderStatus.orderVerific"></el-step>
+        <el-step title="已完成" :description="safeOrderStatus.checkOrderOver"></el-step>
       </el-steps>
       <el-steps v-else :active="form.refundStatus+1" align-center process-status="process" finish-status="success">
-        <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
-        <el-step title="用户申请退款" :description="orderStatus.applyRefund"></el-step>
-        <el-step title="退款申请通过" :description="orderStatus.refundOrderSuccess"></el-step>
+        <el-step title="用户下单" :description="safeOrderStatus.cacheKeyCreateOrder"></el-step>
+        <el-step title="用户申请退款" :description="safeOrderStatus.applyRefund"></el-step>
+        <el-step title="退款申请通过" :description="safeOrderStatus.refundOrderSuccess"></el-step>
       </el-steps>
     </el-card>
     <el-card>
@@ -165,6 +165,30 @@ export default {
   watch: {
     'form': function(val) {
       this.getNowOrderStatus();
+    }
+  },
+  computed: {
+    safeOrderStatus() {
+      if (!this.orderStatus) {
+        return {
+          size: 0,
+          cacheKeyCreateOrder: '',
+          paySuccess: '',
+          orderVerific: '',
+          checkOrderOver: '',
+          applyRefund: '',
+          refundOrderSuccess: ''
+        };
+      }
+      return {
+        cacheKeyCreateOrder: this.orderStatus.cacheKeyCreateOrder || '',
+        paySuccess: this.orderStatus.paySuccess || '',
+        orderVerific: this.orderStatus.orderVerific || '',
+        checkOrderOver: this.orderStatus.checkOrderOver || '',
+        applyRefund: this.orderStatus.applyRefund || '',
+        refundOrderSuccess: this.orderStatus.refundOrderSuccess || '',
+        size: this.orderStatus.size || 0
+      };
     }
   },
   methods: {

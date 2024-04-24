@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
     <div>
-      <el-steps v-if="order.refundStatus===0" :active="orderStatus.size" align-center process-status="process" finish-status="success">
-        <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
-        <el-step title="待发货" :description="orderStatus.paySuccess"></el-step>
-        <el-step title="待收货" :description="orderStatus.deliveryGoods"></el-step>
-        <el-step title="待评价" :description="orderStatus.userTakeDelivery"></el-step>
-        <el-step title="已完成" :description="orderStatus.checkOrderOver"></el-step>
+      <el-steps v-if="order.refundStatus===0" :active="safeOrderStatus.size" align-center process-status="process" finish-status="success">
+        <el-step title="用户下单" :description="safeOrderStatus.cacheKeyCreateOrder"></el-step>
+        <el-step title="待发货" :description="safeOrderStatus.paySuccess"></el-step>
+        <el-step title="待收货" :description="safeOrderStatus.deliveryGoods"></el-step>
+        <el-step title="待评价" :description="safeOrderStatus.userTakeDelivery"></el-step>
+        <el-step title="已完成" :description="safeOrderStatus.checkOrderOver"></el-step>
       </el-steps>
       <el-steps v-else :active="order.refundStatus+1" align-center process-status="process" finish-status="success">
-        <el-step title="用户下单" :description="orderStatus.cacheKeyCreateOrder"></el-step>
-        <el-step title="用户申请退款" :description="orderStatus.applyRefund"></el-step>
-        <el-step title="退款申请通过" :description="orderStatus.refundOrderSuccess"></el-step>
+        <el-step title="用户下单" :description="safeOrderStatus.cacheKeyCreateOrder"></el-step>
+        <el-step title="用户申请退款" :description="safeOrderStatus.applyRefund"></el-step>
+        <el-step title="退款申请通过" :description="safeOrderStatus.refundOrderSuccess"></el-step>
       </el-steps>
 
     </div>
@@ -516,6 +516,33 @@ import eRemark from './remark'
         }
       }
     },
+    computed: {
+      safeOrderStatus() {
+        if (!this.orderStatus) {
+          return {
+            size: 0,
+            cacheKeyCreateOrder: '',
+            paySuccess: '',
+            deliveryGoods: '',
+            userTakeDelivery: '',
+            checkOrderOver: '',
+            applyRefund: '',
+            refundOrderSuccess: ''
+          };
+        }
+        return {
+          cacheKeyCreateOrder: this.orderStatus.cacheKeyCreateOrder || '',
+          paySuccess: this.orderStatus.paySuccess || '',
+          deliveryGoods: this.orderStatus.deliveryGoods || '',
+          userTakeDelivery: this.orderStatus.userTakeDelivery || '',
+          checkOrderOver: this.orderStatus.checkOrderOver || '',
+          applyRefund: this.orderStatus.applyRefund || '',
+          refundOrderSuccess: this.orderStatus.refundOrderSuccess || '',
+          size: this.orderStatus.size || 0
+        };
+      }
+    },
+
     mounted () {
       this.init();
     },
