@@ -248,13 +248,7 @@ server
   docker build -t yshop-admin .  
   ```
 
-# 项目说明
-#### 项目源码
 
-|     |  后台系统源码 |   后台系统前端源码  |
-|---  |--- | --- |
-|   码云  |  https://gitee.com/guchengwuyue/yshopmall  | https://gitee.com/guchengwuyue/yshopmall_qd |
-|   github   |  https://github.com/guchengwuyue/yshopmall |https://github.com/guchengwuyue/yshopmall_qd  |
 
 
 
